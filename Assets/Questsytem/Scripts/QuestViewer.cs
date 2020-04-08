@@ -19,13 +19,13 @@ namespace ItsBaptiste.QuestSystem
     public void Subscribe()
     {
       QuestManager.instance.questViewers.Add(this);
+      UpdateUi();
     }
 
     public void UpdateUi()
     {
-      texte.text = "";
-      //texte.text += $"<size=200%>{QuestManager.GetStep().title}</size>\n";
-      //texte.text += $"{QuestManager.GetStep().description}\n";
+      texte.text = $"<size=200%>{QuestManager.GetStep().title}</size>\n";
+      texte.text += $"{QuestManager.GetStep().description}\n";
     }
 
   }

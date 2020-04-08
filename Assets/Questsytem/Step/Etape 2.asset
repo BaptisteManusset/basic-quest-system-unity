@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: "Titre de l'\xE9tape"
   description: "Description de l'\xE9tape"
+  nextStep: {fileID: 11400000, guid: 8f139780a5e101b4da76efc9e54d5285, type: 2}
+  nextStepWithError: {fileID: 0}
+  questElement: {fileID: 0}

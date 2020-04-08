@@ -15,7 +15,7 @@ namespace ItsBaptiste.QuestSystem
 
 
     int toolbarInt = 0;
-    string[] toolbarStrings = { "Creer une Step", "blblblbl", "bbllbblsjhdToolbar3" };
+    string[] toolbarStrings = { "Creer une Step", "Lier deux Step", "bbllbblsjhdToolbar3" };
     string stepName;
     string stepDescription;
 
@@ -32,28 +32,45 @@ namespace ItsBaptiste.QuestSystem
       toolbarInt = GUILayout.Toolbar(toolbarInt, toolbarStrings);
       switch (toolbarInt)
       {
-        case 0:
-          GUILayout.Label("Creer une Step");
-          GUILayout.Label("Nom");
-          stepName = GUILayout.TextField(stepName, 15, "textfield");
+        //case 0:
+        //  GUILayout.Label("Creer une Step");
+        //  GUILayout.Label("Nom");
+        //  stepName = GUILayout.TextField(stepName, 15, "textfield");
 
-          GUILayout.Label("Description");
-          stepDescription = GUILayout.TextField(stepDescription, 300, EditorStyles.textArea);
+        //  GUILayout.Label("Description");
+        //  stepDescription = GUILayout.TextField(stepDescription, 300, EditorStyles.textArea);
 
-          GUILayout.BeginHorizontal();
-          if (GUILayout.Button("Creer un Gameobject Etape"))
+        //  GUILayout.BeginHorizontal();
+        //  if (GUILayout.Button("Creer un Gameobject Etape"))
+        //  {
+        //    if (Selection.activeGameObject.GetComponent<QuestElement>() == null)
+        //    {
+        //      QuestElement questElement = Selection.activeGameObject.AddComponent<QuestElement>();
+        //      questElement.quest = QuestManager.CreateSCriptableObject(stepName, stepDescription);
+        //    }
+        //  }
+
+        //  GUILayout.EndHorizontal();
+
+        //  break;
+        case 1:
+          EditorGUILayout.BeginHorizontal();
+          previousElement = EditorGUILayout.ObjectField(previousElement, typeof(QuestElement), true, GUILayout.MinHeight(50)) as QuestElement;
+          
+          EditorGUILayout.LabelField("==>");
+
+          actualElement = EditorGUILayout.ObjectField(actualElement, typeof(QuestElement), true, GUILayout.MinHeight(50)) as QuestElement;
+          EditorGUILayout.EndHorizontal();
+
+          if (GUILayout.Button("Lier les deux étapes", GUILayout.MinHeight(50)))
           {
-            if (Selection.activeGameObject.GetComponent<QuestElement>() == null)
-            {
-              QuestElement questElement = Selection.activeGameObject.AddComponent<QuestElement>();
-              questElement.quest = QuestManager.CreateSCriptableObject(stepName, stepDescription);
-            }
+
+            previousElement.quest.nextStep = actualElement.quest;
+
+
           }
 
-          GUILayout.EndHorizontal();
 
-          break;
-        case 1:
           break;
         case 2:
           //#region creer une etape
@@ -118,7 +135,7 @@ namespace ItsBaptiste.QuestSystem
     }
 
 
-   
+
 
 
     public void OnInspectorUpdate()

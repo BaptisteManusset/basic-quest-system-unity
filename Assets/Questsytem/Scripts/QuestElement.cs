@@ -7,8 +7,15 @@ namespace ItsBaptiste.QuestSystem
   public class QuestElement : MonoBehaviour
   {
     public Step quest;
-    public QuestElement nextQuestElement;
-    public QuestElement nextQuestElementWithError;
+    //public QuestElement nextQuestElement;
+    //public QuestElement nextQuestElementWithError;
+
+
+    private void Start()
+    {
+
+      quest.Subscribe(this);
+    }
 
 
     [ContextMenu("Reset les étapes")]
@@ -46,13 +53,14 @@ namespace ItsBaptiste.QuestSystem
       Gizmos.color = (quest == null ? Color.red : green);
       Gizmos.DrawWireSphere(transform.position, .75f); ;
 
+      if (quest)
+        if (quest.nextStep)
+          if (quest.nextStep.questElement != null)
+            Debug.DrawLine(transform.position, quest.nextStep.questElement.transform.position);
 
-      if (nextQuestElement != null)
-        Debug.DrawLine(transform.position, nextQuestElement.transform.position);
-
-      if (nextQuestElementWithError != null)
+      if (quest.nextStepWithError != null)
       {
-        Debug.DrawLine(transform.position, nextQuestElementWithError.transform.position, Color.red);
+        Debug.DrawLine(transform.position, quest.nextStepWithError.questElement.transform.position, Color.red);
       }
 
     }

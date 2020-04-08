@@ -12,12 +12,12 @@ namespace ItsBaptiste.QuestSystem
     #endregion
 
     [Header("Initialisation")]
-    private List<QuestElement> questElements;
+    private List<Step> steps;
     public List<QuestViewer> questViewers;
-    public QuestElement firstStep;
+    public Step firstStep;
 
     [Header("Etape Actuelle")]
-    public QuestElement actualStep;
+    public Step actualStep;
 
     public static bool isCompleted = false;
 
@@ -36,20 +36,23 @@ namespace ItsBaptiste.QuestSystem
 
       actualStep = firstStep;
 
-      QuestManager.instance.UpdateUis();
     }
 
-    //public static void Subscribe(QuestElement element)
-    //{
-    //  QuestManager.instance.questElements.Add(element);
-    //}
+
+
+    private void Start()
+    {
+
+      QuestManager.instance.UpdateUis();
+    }
 
     public static void CompleteStep()
     {
 
       if (QuestManager.instance.actualStep != null)
       {
-        QuestManager.instance.actualStep = QuestManager.instance.actualStep.nextQuestElement;
+        QuestManager.instance.actualStep = QuestManager.instance.actualStep.nextStep;
+        QuestManager.instance.UpdateUis();
       } else
       {
         Debug.Log("il n'y a pas de suite");
@@ -59,19 +62,15 @@ namespace ItsBaptiste.QuestSystem
     {
       if (QuestManager.instance.actualStep == null) return;
 
-      if (QuestManager.instance.actualStep.nextQuestElementWithError != null)
+      if (QuestManager.instance.actualStep.nextStepWithError!= null)
       {
-        QuestManager.instance.actualStep = QuestManager.instance.actualStep.nextQuestElementWithError;
+        QuestManager.instance.actualStep = QuestManager.instance.actualStep.nextStepWithError;
       } else
       {
         Debug.Log("il n'y a pas de suite");
       }
     }
-    public static void ResetStep()
-    {
-      if (QuestManager.instance.firstStep == null) return;
-      QuestManager.instance.actualStep = QuestManager.instance.firstStep;
-    }
+
 
     private void UpdateUis()
     {
@@ -81,7 +80,10 @@ namespace ItsBaptiste.QuestSystem
       }
     }
 
-
+    public static Step GetStep()
+    {
+      return QuestManager.instance.actualStep;
+    }
 
     #region editor
     private void OnDrawGizmos()
@@ -89,12 +91,9 @@ namespace ItsBaptiste.QuestSystem
       if (actualStep)
       {
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(actualStep.transform.position, .5f);
+        Gizmos.DrawSphere(actualStep.questElement.transform.position, .5f);
       }
     }
-    #endregion
-
-
     public static Step CreateSCriptableObject(string name = null, string description = null)
     {
       Step asset = ScriptableObject.CreateInstance<Step>();
@@ -106,6 +105,12 @@ namespace ItsBaptiste.QuestSystem
       asset.description = description;
       return asset;
     }
+    public static void ResetStep()
+    {
+      if (QuestManager.instance.firstStep == null) return;
+      QuestManager.instance.actualStep = QuestManager.instance.firstStep;
+    }
+    #endregion
   }
 
 
